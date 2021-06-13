@@ -1,8 +1,6 @@
 name: Action
 
-on:
-  push:
-    branches: *
+on: [push]
 
 jobs:
   build:

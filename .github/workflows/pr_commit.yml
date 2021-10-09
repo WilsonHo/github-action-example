@@ -1,0 +1,42 @@
+# This is a basic workflow that is manually triggered
+
+name: Pull Request Commit
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  pr_commented:
+    # This job only runs for pull request comments
+    name: PR comment
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Comment on PR #${{ github.event.issue.number }}"
+  issue_commented:
+    # This job only runs for issue comments
+    name: Issue comment
+    if: ${{ !github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Comment on issue #${{ github.event.issue.number }}"
+          
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: khan/pull-request-comment-trigger@master
+        id: check
+        with:
+          trigger: '@deploy'
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: '${{ secrets.REPO_ACCESS_TOKEN }}'
+      - run: 'echo Found it!'
+        if: steps.check.outputs.triggered == 'true'
+      - run: |
+          echo "triggered ${{ steps.check.outputs.triggered }}"
+          echo "comment_body ${{ steps.check.outputs.comment_body }}"
+          echo "This is GITHUB_TOKEN ${{env.GITHUB_TOKEN}} $GITHUB_TOKEN"

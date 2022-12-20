@@ -21,7 +21,7 @@ jobs:
       run: |
         ls
         pwd
-        ./generate-primes.sh -d prime-numbers
+        ./generate-prime.sh -d prime-numbers
 
     - name: Use Prime Numbers
       run: cat prime-numbers

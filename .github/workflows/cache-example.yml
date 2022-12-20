@@ -21,6 +21,7 @@ jobs:
       run: |
         ls
         pwd
+        chmod +x ./generate_prime.sh
         ./generate_prime.sh -d prime-numbers
 
     - name: Use Prime Numbers

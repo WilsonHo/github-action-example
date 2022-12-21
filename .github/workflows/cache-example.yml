@@ -19,7 +19,10 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
+      - name: Print cache variables
+        run: |
+          echo ${{ steps.cache-npm.outputs.cache-hit }}
+          echo ${{ steps.cache-npm.outputs }}
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: List the state of node modules
         continue-on-error: true

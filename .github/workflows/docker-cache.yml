@@ -20,6 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Cache Docker image
+        id: cache-docker
         uses: actions/cache@v2
         with:
           path: |

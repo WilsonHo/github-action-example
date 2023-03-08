@@ -29,7 +29,7 @@ jobs:
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
 
       - name: Build Docker image
-        if: steps.cache-docker.outputs.cache-hit != 'true'
+        if: ${{ steps.cache-docker.outputs.cache-hit != 'true' }}
         run: |
           pwd
           ls .

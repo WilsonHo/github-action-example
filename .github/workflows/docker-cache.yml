@@ -35,4 +35,4 @@ jobs:
           docker build -t my-image .
 
       - name: Push Docker image
-        run: docker push my-image
+        run: docker run my-image

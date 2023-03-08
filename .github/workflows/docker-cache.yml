@@ -36,5 +36,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker run -d -p 5000:5000 run my-image
+          docker run -d -p 5000:5000 my-image
           curl http://127.0.0.1:5000

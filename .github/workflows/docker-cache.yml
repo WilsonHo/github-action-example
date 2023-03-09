@@ -21,6 +21,8 @@ jobs:
       - name: Add Docker Permission
         run: |
           sudo ls -la /var/lib/docker
+          sudo ls -la /var/lib/docker/image
+          pwd
           sudo usermod -aG docker runner
       - name: Cache Docker image
         id: cache-docker

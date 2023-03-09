@@ -28,9 +28,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            docker-cache
+            ~/docker-image
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
 
+      - name: Update docker image
+        if: ${{ steps.cache-docker.outputs.cache-hit == 'true' }}
+        run: |
+          sudo cp -r ~/docker-image/image /var/lib/docker/  
+          
       - name: Build Docker image
         if: ${{ steps.cache-docker.outputs.cache-hit != 'true' }}
         run: |
@@ -39,11 +44,11 @@ jobs:
           pwd
           ls .
           docker build -t my-image .
-          sudo ls -al /var/lib/docker
-          mkdir docker-cache
-          sudo cp -r /var/lib/docker  docker-cache
-          sudo chown -R runner.runner docker-cache
-          ls -la docker-cache
+          sudo ls -al /var/lib/docker/image
+          mkdir ~/docker-image
+          sudo cp -r /var/lib/docker/image  ~/docker-image
+          sudo chown -R runner.runner ~/docker-image
+          ls -la ~/docker-image
     
       - name: Push Docker image
         run: |

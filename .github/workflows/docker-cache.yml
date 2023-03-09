@@ -31,7 +31,7 @@ jobs:
       - name: Build Docker image
         if: ${{ steps.cache-docker.outputs.cache-hit != 'true' }}
         run: |
-          ls **/Dockerfile
+          ls **
           pwd
           ls .
           docker build -t my-image .

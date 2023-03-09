@@ -20,12 +20,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Add Docker Permission
         run: |
-          sudo ls -la /var/lib/docker/image/**
-          pwd
-          mkdir docker-image
-          sudo cp -r /var/lib/docker/image  docker-image
-          chown -R runner.runner docker-image
-          ls -la docker-image/**
+          mkdir docker
+          sudo cp -r /var/lib/docker/*  docker
+          chown -R runner.runner docker
+          ls -la docker/**
       - name: Cache Docker image
         id: cache-docker
         uses: actions/cache@v3

@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Add Docker Permission
         run: |
-          ls -la /var/lib/docker
+          sudo ls -la /var/lib/docker
           sudo usermod -aG docker runner
       - name: Cache Docker image
         id: cache-docker

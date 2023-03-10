@@ -24,7 +24,7 @@ jobs:
         id: hash
         with:
           files: |
-            ./app.py
+            ./app
             
       - run: mkdir -p ~/image-cache
 

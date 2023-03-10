@@ -18,7 +18,14 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
+          
+      - name: Hash directory
+        uses: dawidd6/action-hash-files@v2
+        id: hash
+        with:
+          files: |
+            ./app.py
+            
       - run: mkdir -p ~/image-cache
 
       - name: Cache Docker image
@@ -27,7 +34,7 @@ jobs:
         with:
           path: |
             ~/image-cache
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}-${{ steps.hash.outputs.hash }}
 
       - name: Build Docker image
         if: steps.image-cache.outputs.cache-hit != 'true'

@@ -18,38 +18,27 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Add Docker Permission
-        run: |
-          echo "Hello"
-          
-          
+
+      - run: mkdir -p ~/image-cache
+
       - name: Cache Docker image
-        id: cache-docker
+        id: image-cache
         uses: actions/cache@v3
         with:
           path: |
-            ~/docker-image
+            ~/image-cache
           key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
 
-      - name: Update docker image
-        if: ${{ steps.cache-docker.outputs.cache-hit == 'true' }}
-        run: |
-          sudo cp -r ~/docker-image/image /var/lib/docker/  
-          
       - name: Build Docker image
-        if: ${{ steps.cache-docker.outputs.cache-hit != 'true' }}
+        if: steps.image-cache.outputs.cache-hit != 'true'
         run: |
-          whoami
-          ls **
-          pwd
-          ls .
           docker build -t my-image .
-          sudo ls -al /var/lib/docker/image
-          mkdir ~/docker-image
-          sudo cp -r /var/lib/docker/image  ~/docker-image
-          sudo chown -R runner.runner ~/docker-image
-          ls -la ~/docker-image
-    
+          docker save -o ~/image-cache/my-image.tar my-image      
+
+      - if: steps.image-cache.outputs.cache-hit == 'true'
+        name: Load docker image
+        run: docker load -i ~/image-cache/my-image.tar          
+
       - name: Push Docker image
         run: |
           docker run -d -p 5000:5000 my-image

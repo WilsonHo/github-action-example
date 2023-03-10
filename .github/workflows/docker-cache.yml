@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           
       - name: Hash directory
-        uses: dawidd6/action-hash-files@v2
+        uses: theowenyoung/folder-hash@v3
         id: hash
         with:
           files: |

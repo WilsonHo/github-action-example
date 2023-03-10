@@ -26,13 +26,6 @@ jobs:
           path: |
             ./app
 
-      - name: Hash File
-        uses: theowenyoung/folder-hash@v3
-        id: hash-file
-        with:
-          path: |
-            ./app.js            
-            
       - run: mkdir -p ~/image-cache
 
       - name: Cache Docker image
@@ -41,7 +34,7 @@ jobs:
         with:
           path: |
             ~/image-cache
-          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}-${{ steps.hash.outputs.hash }}-${{ steps.hash-file.outputs.hash }}
+          key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}-${{ steps.hash.outputs.hash }}-${{ hashFiles('**/app.js') }}
 
       - name: Build Docker image
         if: steps.image-cache.outputs.cache-hit != 'true'
